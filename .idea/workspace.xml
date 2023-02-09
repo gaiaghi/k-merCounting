@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/utils/SparkContextSetup.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/sample.fna" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/structures/GenomicEntry.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/structures/GenomicEntry.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/structures/GenomicEntry.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/structures/GenomicEntry.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/structures/GenomicSeq.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/structures/GenomicSeq.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/utils/SparkContextSetup.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/SparkContextSetup.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +59,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "sbt.project.settings.configurable",
@@ -74,7 +76,6 @@
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="k-merCounting" />
       <option name="PROGRAM_PARAMETERS" value="local" />
-      <option name="VM_PARAMETERS" value="--add-exports java.base/sun.nio.ch=ALL-UNNAMED" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -96,7 +97,8 @@
       <workItem from="1675873219725" duration="952000" />
       <workItem from="1675874202038" duration="2385000" />
       <workItem from="1675876619336" duration="30000" />
-      <workItem from="1675876689364" duration="5250000" />
+      <workItem from="1675876689364" duration="6164000" />
+      <workItem from="1675940077941" duration="16361000" />
     </task>
     <servers />
   </component>
