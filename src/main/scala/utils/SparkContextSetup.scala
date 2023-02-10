@@ -2,23 +2,18 @@ package utils
 import org.apache.spark.sql.SparkSession
 
 object SparkContextSetup {
-  var DEF_PAR = 1 // number of partitions
 
-  private def _sparkSession(master: String): SparkSession = {
-    var builder = SparkSession.builder.appName("k-mer Counting")
-
-    if (master != "default") {
-      builder = builder.master(master)
-    }
-    builder.getOrCreate()
-  }
+  // number of partitions
+  var PARTITIONS = 4
 
   def sparkSession(master: String, par: Int): SparkSession = {
-    val session = _sparkSession(master)
 
-    DEF_PAR = par
+    PARTITIONS = par
+
+    val session = SparkSession.builder.appName("k-mer Counting").master(master).getOrCreate()
     session.sparkContext.setLogLevel("WARN")
 
     session
+
   }
 }
