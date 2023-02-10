@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/counting/CountingAlgorithm.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/sample.fna" beforeDir="false" afterPath="$PROJECT_DIR$/data/sample.fna" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/utils/SparkContextSetup.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/SparkContextSetup.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +92,7 @@
       <workItem from="1675876619336" duration="30000" />
       <workItem from="1675876689364" duration="6164000" />
       <workItem from="1675940077941" duration="16510000" />
-      <workItem from="1676035253621" duration="13911000" />
+      <workItem from="1676035253621" duration="15986000" />
     </task>
     <servers />
   </component>

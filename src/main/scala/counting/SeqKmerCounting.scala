@@ -11,15 +11,21 @@ object SeqKmerCounting extends CountingAlgorithm {
       //split the FASTA file into entries (genomic subsequence)
       val entries: Array[String] = seq.split(">")
 //      entries.foreach(println(_))
-      val kmers = entries.flatMap(_.sliding(k.value,1).map((_,1)))
+      //extract the k-mers
 
+      val kmers_con = entries.flatMap(_.sliding(k.value, 1).map((_, 1)))
+      val kmers = entries.flatMap(_.sliding(k.value,1).filter(kmer => !(kmer.contains("N"))).map((_,1)))
+      kmers_con.foreach(println)
+      print("\n senza: \n")
+      kmers.foreach(println)
       val kmersGrouped = kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
 
 //      kmersGrouped.foreach(println)
 
     //TODO
-    // -modifica il return value
-    // - togli gli N
+    // - segna le tempistiche
+    // - modifica il return value
+    // - TRASFORMA LE LETTERE + uppercase: con dizionario tipo esercizio del tastierino numerico (map to translate )
     // - versione canonica
     sequence.map((_,1))
   }
