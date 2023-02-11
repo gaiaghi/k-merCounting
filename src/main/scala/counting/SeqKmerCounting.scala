@@ -29,16 +29,28 @@ object SeqKmerCounting extends CountingAlgorithm {
   }
 
 
-  override def counting(sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int], canonical: Boolean): RDD[(String, Int)] = {
+  override def counting(sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int], canonical: String): RDD[(String, Int)] = {
       val seq = _transformBases(sequence.collect().mkString)
 
       //split the FASTA file into entries (genomic subsequence)
       val entries: Array[String] = seq.split(">")
 
       //extract and count the k-mers
-      val kmers = if (canonical)
-        entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map(kmer => (_reverseComplement(kmer), 1)))
-      else entries.flatMap(_.sliding(k.value,1).filter(kmer => !kmer.contains("N")).map((_,1)))
+
+      val kmers: Array[(String,Int)] = canonical match {
+        case "canonical" =>
+          entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map(kmer => (_reverseComplement(kmer), 1)))
+
+        case "non-canonical" =>
+          entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)))
+
+        case "both" => {
+          val filteredKmers = entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")))
+          //TODO COME RESTITUIRE DUE RISULTATI?
+          filteredKmers.map((_, 1))
+
+        }
+      }
 
       val kmersGroupped: Map[String, Int] = kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
 
