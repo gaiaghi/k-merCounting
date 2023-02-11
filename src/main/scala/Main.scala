@@ -8,11 +8,11 @@ object Main {
   def main(args: Array[String]): Unit = {
     /*
     * args(0) = master
-    * args(1) = path of the fasta file
-    * args(2) = k value (length of the kmers)
-    * args(3) = canonical or non-canonical counting
-    * args(4) = parallelism
-    * args(5) = execution mode (parallel / sequential)
+    * args(1) = path of the fasta file. Default: data/humantest.fna
+    * args(2) = k value (length of the kmers). Default: //TODO scrivi i default values
+    * args(3) = counting type ("canonical", "non-canonical", "both"). Default: "both"
+    * args(4) = parallelism. Default: 4
+    * args(5) = execution mode ("parallel", "sequential"). Default: sequential
     * */
 
     //for local only
@@ -22,7 +22,7 @@ object Main {
     val master = args(0)
     val fileName = if (args.length > 1) args(1) else "data/sample.fna"//TODO change to "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
-    val countingType = if (args.length > 3 && args(3) == "canonical") args(3) else "non-canonical"
+    val countingType = if (args.length > 3 && args(3) == "canonical") true else false
     val parallelism = if (args.length > 4) args(4) else "4"
     val exeMode = if (args.length > 5 && args(5) == "parallel") args(5) else "sequential"
 
@@ -60,7 +60,7 @@ object Main {
     val broadcastK: Broadcast[Int] = sparkContext.broadcast(kLen.toInt)
 
     //execute k-mer counting
-    counter.counting(filteredGenSeq, sparkContext, broadcastK)
+    counter.counting(filteredGenSeq, sparkContext, broadcastK, countingType)
 
 
     //prova veloce

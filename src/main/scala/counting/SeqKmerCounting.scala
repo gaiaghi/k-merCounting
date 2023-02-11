@@ -4,29 +4,50 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 
 object SeqKmerCounting extends CountingAlgorithm {
-  override def counting(sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int]): RDD[(String, Int)] = {
-      val seq = sequence.collect().mkString
-//    println(seq+"\n\n")
+
+  private val baseMap: Map[Char, Char] = Map('a' -> 'A', 't' -> 'T', 'c' -> 'C', 'g' -> 'G',
+    'A' -> 'A', 'T' -> 'T', 'C' -> 'C', 'G' -> 'G').withDefaultValue('N')
+
+
+  private val complementMap: Map[Char, Char] = Map ('A' -> 'T', 'C' -> 'G', 'G' -> 'C', 'T' -> 'A')
+
+
+  private def _transformBases(seq:String):String = {
+    /*
+    * Apply characters translation to keep only the interested bases in the genomic sequence.
+    * */
+      seq map baseMap
+  }
+
+
+  private def _reverseComplement(seq: String): String = {
+    /*
+    * Computes the reverse complement of a genomic sequence, and returns the smallest sequence (alphabetically).
+    * */
+      val reverse = seq.reverse map complementMap
+      if (reverse.compare(seq) > 0) { seq }  else { reverse }
+  }
+
+
+  override def counting(sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int], canonical: Boolean): RDD[(String, Int)] = {
+      val seq = _transformBases(sequence.collect().mkString)
 
       //split the FASTA file into entries (genomic subsequence)
       val entries: Array[String] = seq.split(">")
-//      entries.foreach(println(_))
-      //extract the k-mers
 
-      val kmers_con = entries.flatMap(_.sliding(k.value, 1).map((_, 1)))
-      val kmers = entries.flatMap(_.sliding(k.value,1).filter(kmer => !(kmer.contains("N"))).map((_,1)))
-      kmers_con.foreach(println)
-      print("\n senza: \n")
-      kmers.foreach(println)
-      val kmersGrouped = kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
+      //extract and count the k-mers
+      val kmers = if (canonical)
+        entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map(kmer => (_reverseComplement(kmer), 1)))
+      else entries.flatMap(_.sliding(k.value,1).filter(kmer => !kmer.contains("N")).map((_,1)))
 
-//      kmersGrouped.foreach(println)
+      val kmersGroupped: Map[String, Int] = kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
+
+      sparkContext.parallelize(kmersGroupped.toSeq)
+
+
 
     //TODO
     // - segna le tempistiche
-    // - modifica il return value
-    // - TRASFORMA LE LETTERE + uppercase: con dizionario tipo esercizio del tastierino numerico (map to translate )
-    // - versione canonica
-    sequence.map((_,1))
+    // - sposta le cose private ausiliari in un'altra classe?
   }
 }
