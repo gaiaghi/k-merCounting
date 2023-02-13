@@ -7,14 +7,36 @@ import utils.SparkContextSetup
 
 object Main {
 
-  private def _invokeCounting(genSeq: RDD[String], sc: SparkContext, k:Broadcast[Int], countingType: String, exeMode:String): (RDD[(String, Int)],Double)={
+  private def _invokeCounting(genSeq: RDD[String], sc: SparkContext, k:Broadcast[Int],
+                              countingType: String, exeMode:String): (List[RDD[(String, Int)]],Double)={
 
 //    if (exeMode == "sequential") {
+      val res = countingType match {
+        case "canonical" => {
+          val startTime = System.nanoTime
+          val counter = new SeqKmerCounting(genSeq, sc, k)
+          val kmers = counter.canonicalCounter
+          val exeTime = (System.nanoTime - startTime) / 1e9d
+          (List(kmers), exeTime)
+        }
+        case "non-canonical" =>{
+          val startTime = System.nanoTime
+          val counter = new SeqKmerCounting(genSeq, sc, k)
+          val kmers = counter.nonCanonicalCounter
+          val exeTime = (System.nanoTime - startTime) / 1e9d
+          (List(kmers), exeTime)
+        }
+        case "both" =>{
+          val startTime = System.nanoTime
+          val counter = new SeqKmerCounting(genSeq, sc, k)
+          val canonicalKmers = counter.canonicalCounter
+          val kmers = counter.nonCanonicalCounter
+          val exeTime = (System.nanoTime - startTime) / 1e9d
+          (List(canonicalKmers,kmers), exeTime)
+        }
+      }
 
-      val startTime = System.nanoTime
-      val kmers = SeqKmerCounting.counting(genSeq, sc, k, countingType)
-      val exeTime = (System.nanoTime - startTime) / 1e9d
-      (kmers, exeTime)
+      res
 
 //    }
 //    else{
@@ -67,11 +89,15 @@ object Main {
         )
     })
 
-    //TODO dai la possibilità di svoglere il counting su più valori di k contemporaneamente
+    //TODO dai la possibilità di svoglere il counting su più valori di k contemporaneamente?
     val broadcastK: Broadcast[Int] = sparkContext.broadcast(kLen.toInt)
 
     //execute k-mer counting
-    val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
+    val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, "non-canonical", exeMode) //TODO countingType invece di "both"
+
+    //stampa di prova:
+//    results._1.map(_.toString())
+    
 
     //TODO save the results
 

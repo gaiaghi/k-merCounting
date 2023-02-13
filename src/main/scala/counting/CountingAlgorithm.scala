@@ -5,7 +5,10 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 
 trait CountingAlgorithm {
-  def counting(sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int], canonical: String): RDD[(String, Int)]
+
+  type T
+  def kmerExtraction(sequence: RDD[String], k:Broadcast[Int]): T
+  def counting(kmers: T, sparkContext: SparkContext, canonical: Boolean): RDD[(String, Int)]
 
   //TODO da implementare negli oggetti
   def toString: String
