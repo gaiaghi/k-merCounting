@@ -18,25 +18,7 @@ object SeqKmerCounting extends CountingAlgorithm {
   }
 
   override def counting(kmers: T, sparkContext: SparkContext, canonical: Boolean): RDD[(String, Int)] = {
-//      val seq = transformBases(sequence.collect().mkString)
-//
-//      //split the FASTA file into entries (genomic subsequence)
-//      val entries: Array[String] = seq.split(">")
-      //extract and count the k-mers
-//
-//      val kmers: Array[(String,Int)] = canonical match {
-//        case "canonical" =>
-//          entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map(kmer => (reverseComplement(kmer), 1)))
-//
-//        case "non-canonical" =>
-//          entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)))
-//
-//        case "both" => {
-//          val filteredKmers = entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")))
-//          filteredKmers.map((_, 1))
 
-//        }
-//      }
       val kmersGroupped: Map[String, Int] =
         if (canonical) {
           kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
@@ -44,13 +26,6 @@ object SeqKmerCounting extends CountingAlgorithm {
         else {
           kmers.groupBy(kmer => reverseComplement(kmer._1)).map { case (k, v) => k -> v.map {_._2}.sum }
         }
-
-
-//      val group =entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map(kmer => (_reverseComplement(kmer), 1))).groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
-//      group.foreach(println)
-//      println("\naltro modo:\n")
-//      val due = entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1))).groupBy(kmerf => _reverseComplement(kmerf._1)).map { case (k, v) => k -> v.map {_._2}.sum }
-//      due.foreach(println)
 
       sparkContext.parallelize(kmersGroupped.toSeq)
   }

@@ -93,11 +93,11 @@ object Main {
     val broadcastK: Broadcast[Int] = sparkContext.broadcast(kLen.toInt)
 
     //execute k-mer counting
-    val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, "non-canonical", exeMode) //TODO countingType invece di "both"
+    val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
 
     //stampa di prova:
 //    results._1.map(_.toString())
-    
+
 
     //TODO save the results
 
