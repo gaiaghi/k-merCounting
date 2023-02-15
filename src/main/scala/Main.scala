@@ -24,6 +24,7 @@ object Main {
           val counter = new SeqKmerCounting(genSeq, sc, k)
           val kmers = counter.nonCanonicalCounter
           val exeTime = (System.nanoTime - startTime) / 1e9d
+          println("exe time: "+exeTime)
           (List(kmers), exeTime)
         }
         case "both" =>{
@@ -59,7 +60,7 @@ object Main {
 
     //read arguments
     val master = args(0)
-    val fileName = if (args.length > 1) args(1) else "data/sample.fna"//TODO change to "data/humantest.fna"
+    val fileName = if (args.length > 1) args(1) else "data/sample.fna"//"data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"//TODO change to "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
     val countingType = if (args.length > 3 && (args(3) == "canonical" || args(3) == "both")) args(3) else "non-canonical"
     val parallelism = if (args.length > 4) args(4) else "4"
@@ -80,7 +81,8 @@ object Main {
 
     //loading the fasta file
     val genSeq = sparkContext.textFile(fileName)
-    //removing comment lines
+
+    //removing comment lines (but keeping headers ">")
     val filteredGenSeq = genSeq.filter(line => {
       !(
         line.startsWith("@") ||

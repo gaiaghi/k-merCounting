@@ -8,10 +8,15 @@ object SeqKmerCounting extends CountingAlgorithm {
   override type T = Array[(String,Int)]
 
   override def kmerExtraction(sequence: RDD[String], k:Broadcast[Int]): T = {
-    val seq = transformBases(sequence.collect().mkString)
 
-    //split the FASTA file into entries (genomic subsequence)
-    val entries: Array[String] = seq.split(">")
+    val seq = sequence.collect().mkString("\n").split("(?=>)")
+
+    //split the FASTA file into entries (genomic subsequence), finding each ">" header
+    seq.flatMap(str => str.split("\n").filter(line => !line.startsWith(">")))
+
+    //translate genomic bases
+    val entries = seq.map(str => transformBases(str))
+
     //extracting kmers
     entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)))
 
