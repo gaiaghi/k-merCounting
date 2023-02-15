@@ -11,38 +11,37 @@ object Main {
   private def _invokeCounting(genSeq: RDD[String], sc: SparkContext, k:Broadcast[Int],
                               countingType: String, exeMode:String): (List[RDD[(String, Int)]],Double)={
 
-//    if (exeMode == "sequential") {
-      val res = countingType match {
-        case "canonical" => {
-          val startTime = System.nanoTime
-          val counter = new SeqKmerCounting(genSeq, sc, k)
-          val kmers = counter.canonicalCounter
-          val exeTime = (System.nanoTime - startTime) / 1e9d
-          (List(kmers), exeTime)
-        }
-        case "non-canonical" =>{
-          val startTime = System.nanoTime
-          val counter = new SeqKmerCounting(genSeq, sc, k)
-          val kmers = counter.nonCanonicalCounter
-          val exeTime = (System.nanoTime - startTime) / 1e9d
-          (List(kmers), exeTime)
-        }
-        case "both" =>{
-          val startTime = System.nanoTime
-          val counter = new SeqKmerCounting(genSeq, sc, k)
-          val canonicalKmers = counter.canonicalCounter
-          val kmers = counter.nonCanonicalCounter
-          val exeTime = (System.nanoTime - startTime) / 1e9d
-          (List(canonicalKmers,kmers), exeTime)
-        }
+    val counter:CountingAlgorithm =
+      if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
+      else { new ParKmerCounting(genSeq,sc,k) }
+
+    val res = countingType match {
+      case "canonical" => {
+        val startTime = System.nanoTime
+//          val counter = new SeqKmerCounting(genSeq, sc, k)
+        val kmers = counter.canonicalCounter
+        val exeTime = (System.nanoTime - startTime) / 1e9d
+        (List(kmers), exeTime)
       }
+      case "non-canonical" =>{
+        val startTime = System.nanoTime
+//          val counter = new SeqKmerCounting(genSeq, sc, k)
+        val kmers = counter.nonCanonicalCounter
+        val exeTime = (System.nanoTime - startTime) / 1e9d
+        (List(kmers), exeTime)
+      }
+      case "both" =>{
+        val startTime = System.nanoTime
+//          val counter = new SeqKmerCounting(genSeq, sc, k)
+        val canonicalKmers = counter.canonicalCounter
+        val kmers = counter.nonCanonicalCounter
+        val exeTime = (System.nanoTime - startTime) / 1e9d
+        (List(canonicalKmers,kmers), exeTime)
+      }
+    }
 
-      res
+    res
 
-//    }
-//    else{
-//      val counter: CountingAlgorithm = ParKmerCounting
-//    }
   }
 
   def main(args: Array[String]): Unit = {
@@ -60,7 +59,13 @@ object Main {
 
     //read arguments
     val master = args(0)
-    val fileName = if (args.length > 1) args(1) else "data/GCF_000146045.2_R64_genomic_Saccharomyces_cerevisiae.fna.gz"//"data/sample.fna"//"data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"//TODO change to "data/humantest.fna"
+    val fileName = if (args.length > 1) {
+      args(1) match {
+        case "saccharomyces" => "data/GCF_000146045.2_R64_genomic_Saccharomyces_cerevisiae.fna.gz"
+        case "drosophila" => "data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"
+        case "test" => "data/sample.fna"
+      }
+    } else "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
     val countingType = if (args.length > 3 && (args(3) == "canonical" || args(3) == "both")) args(3) else "non-canonical"
     val parallelism = if (args.length > 4) args(4) else "4"
@@ -102,37 +107,11 @@ object Main {
 
     //TODO controlla come fare nel caso del cloud
     //save the results
-    val outPath = "output/results.txt"
-    FileManager.writeResults(outPath, countingType, results)
-    println("Results saved in "+outPath+" file.")
+//    val outPath = "output/results.txt"
+//    FileManager.writeResults(outPath, countingType, results)
+//    println("Results saved in "+outPath+" file.")
 
 
-    //prova veloce
-    // ___________________________________________________________
-//    val input = "data/sample.fna"
-//    val K = 3
-//    val broadcastkK = sparkContext.broadcast(K)
-//    val records = sparkContext.textFile(input)
-//    // remove the records, which are not an actual sequence data
-//    val filteredRDD = records.filter(line => {
-//      !(
-//        line.startsWith("@") ||
-//          line.startsWith("+") ||
-//          line.startsWith(";") ||
-//          line.startsWith(">")
-//        )
-//    })
-//
-//    filteredRDD.collect().foreach(println)
-//    val kmers = filteredRDD.flatMap(_.sliding(broadcastkK.value, 1).map((_, 1)))
-////    kmers.collect().foreach(println)
-//
-//    // find frequencies of kmers
-//    val kmersGrouped = kmers.reduceByKey(_ + _)
-//    kmersGrouped.foreach(println)
-////    kmersGrouped.saveAsTextFile("output1.txt")
-
-    //___________________________________________________________
     sparkSession.stop()
   }
 }

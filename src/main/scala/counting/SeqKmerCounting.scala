@@ -4,10 +4,11 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import utils.GenomicUtils._
 
-object SeqKmerCounting extends CountingAlgorithm {
+class SeqKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
+                      k:Broadcast[Int]) extends CountingAlgorithm(sequence, sparkContext, k) with CountingType {
   override type T = Array[(String,Int)]
 
-  override def kmerExtraction(sequence: RDD[String], k:Broadcast[Int]): T = {
+  override def _kmerExtraction(sequence: RDD[String], k:Broadcast[Int]): T = {
 
     val seq = sequence.collect().mkString("\n").split("(?=>)")
 
@@ -22,7 +23,7 @@ object SeqKmerCounting extends CountingAlgorithm {
 
   }
 
-  override def counting(kmers: T, sparkContext: SparkContext, canonical: Boolean): RDD[(String, Int)] = {
+  override def _counting(kmers: T, sparkContext: SparkContext, canonical: Boolean): RDD[(String, Int)] = {
 
       val kmersGroupped: Map[String, Int] =
         if (canonical) {
@@ -38,15 +39,15 @@ object SeqKmerCounting extends CountingAlgorithm {
 }
 
 
-class SeqKmerCounting (sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int]) {
-  import SeqKmerCounting._
-
-  private val intermediateCount = kmerExtraction(sequence, k)
-
-  def canonicalCounter: RDD[(String, Int)] =
-    counting(intermediateCount, sparkContext, true)
-
-  def nonCanonicalCounter: RDD[(String, Int)] =
-    counting(intermediateCount, sparkContext, false)
-
-}
+//class SeqKmerCounting (sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int]){
+//  import SeqKmerCounting._
+//
+//  def intermediateCount: T = kmerExtraction(sequence, k)
+//
+//  def canonicalCounter: RDD[(String, Int)] =
+//    counting(intermediateCount, sparkContext, canonical = true)
+//
+//  def nonCanonicalCounter: RDD[(String, Int)] =
+//    counting(intermediateCount, sparkContext, canonical = false)
+//
+//}
