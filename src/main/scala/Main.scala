@@ -1,4 +1,5 @@
 import counting.{CountingAlgorithm, ParKmerCounting, SeqKmerCounting}
+import utils.FileManager
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
@@ -24,7 +25,6 @@ object Main {
           val counter = new SeqKmerCounting(genSeq, sc, k)
           val kmers = counter.nonCanonicalCounter
           val exeTime = (System.nanoTime - startTime) / 1e9d
-          println("exe time: "+exeTime)
           (List(kmers), exeTime)
         }
         case "both" =>{
@@ -60,7 +60,7 @@ object Main {
 
     //read arguments
     val master = args(0)
-    val fileName = if (args.length > 1) args(1) else "data/sample.fna"//"data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"//TODO change to "data/humantest.fna"
+    val fileName = if (args.length > 1) args(1) else "data/GCF_000146045.2_R64_genomic_Saccharomyces_cerevisiae.fna.gz"//"data/sample.fna"//"data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"//TODO change to "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
     val countingType = if (args.length > 3 && (args(3) == "canonical" || args(3) == "both")) args(3) else "non-canonical"
     val parallelism = if (args.length > 4) args(4) else "4"
@@ -97,11 +97,14 @@ object Main {
     //execute k-mer counting
     val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
 
-    //stampa di prova:
-//    results._1.map(_.toString())
+    println("K-mer counting computed in "+results._2+ " sec. ")
+    println("Saving results in file...")
 
-
-    //TODO save the results
+    //TODO controlla come fare nel caso del cloud
+    //save the results
+    val outPath = "output/results.txt"
+    FileManager.writeResults(outPath, countingType, results)
+    println("Results saved in "+outPath+" file.")
 
 
     //prova veloce
@@ -130,6 +133,6 @@ object Main {
 ////    kmersGrouped.saveAsTextFile("output1.txt")
 
     //___________________________________________________________
-
+    sparkSession.stop()
   }
 }
