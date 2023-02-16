@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/counting/CountingType.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/results.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/CountingAlgorithm.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/CountingAlgorithm.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" afterDir="false" />
     </list>
@@ -71,7 +70,7 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="k-merCounting" />
-      <option name="PROGRAM_PARAMETERS" value="local test 3 non-canonical 4 parallel" />
+      <option name="PROGRAM_PARAMETERS" value="local saccharomyces 3 canonical 4 parallel" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,7 +99,8 @@
       <workItem from="1676111640899" duration="15736000" />
       <workItem from="1676279691388" duration="9746000" />
       <workItem from="1676383572653" duration="594000" />
-      <workItem from="1676456485830" duration="18579000" />
+      <workItem from="1676456485830" duration="19319000" />
+      <workItem from="1676540576337" duration="6288000" />
     </task>
     <servers />
   </component>

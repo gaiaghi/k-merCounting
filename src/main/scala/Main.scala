@@ -102,8 +102,14 @@ object Main {
     //execute k-mer counting
     val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
 
-    println("K-mer counting computed in "+results._2+ " sec. ")
-    println("Saving results in file...")
+    //TODO PROVA PAR
+    //----------------------------------------------
+//    val counter = new ParKmerCounting(filteredGenSeq, sparkContext, broadcastK)
+//    counter._kmerExtraction(filteredGenSeq, broadcastK)
+    //----------------------------------------------
+
+//    println("K-mer counting computed in "+results._2+ " sec. ")
+//    println("Saving results in file...")
 
     //TODO controlla come fare nel caso del cloud
     //save the results

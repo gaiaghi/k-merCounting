@@ -20,19 +20,18 @@ class SeqKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
 
     //extracting kmers
     entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)))
-
   }
 
   override def _counting(kmers: T, sparkContext: SparkContext, canonical: Boolean): RDD[(String, Int)] = {
 
       val kmersGroupped: Map[String, Int] =
         if (canonical) {
-          kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
-        }
-        else {
           kmers.groupBy(kmer => reverseComplement(kmer._1)).map { case (k, v) => k -> v.map {_._2}.sum }
         }
-
+        else {
+          kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
+        }
+//      kmersGroupped.foreach(println)
       sparkContext.parallelize(kmersGroupped.toSeq)
   }
 
