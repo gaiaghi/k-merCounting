@@ -1,6 +1,7 @@
 package counting
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.mllib.rdd.RDDFunctions.fromRDD
 import org.apache.spark.rdd.RDD
 import utils.GenomicUtils.{reverseComplement, transformBases}
 
@@ -15,25 +16,16 @@ class ParKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
 
     //split the FASTA file into entries (genomflatMap(ic subsequence), finding each ">" header
 
-    val filteredSeq = seq.filter(line => !line.startsWith(">"))
-//    val filteredSeq = {
-//      seq.map(
-//        par => par.flatMap(str => str.split("\n").filter(line => !line.startsWith(">"))
-//        ).filter(arr => arr.nonEmpty))
-//    }
+    //per sliding RDD (B)
+    val filteredSeq = seq.filter(line => !line.startsWith(">")).flatMap(_.split(""))
 
     //translate genomic bases
     val entries = filteredSeq.map(transformBases)
 
     //extracting kmers
     //TODO make persistent? o forse nella funzione che chiama poi quest'altra funzione?
-    val kmers = entries.flatMap( sec => sec.sliding(k.value,1).filter(kmer => !kmer.contains("N")) ).map((_,1) )
-
-//    kmers.collect().foreach(println)
-
-//    val kmers = filteredRDD.flatMap(_.sliding(broadcastK.value, 1).map((_, 1)))
-//    // find frequencies of kmers
-//    val kmersGrouped = kmers.reduceByKey(_ + _)
+    //TODO usare mapPartition?
+    val kmers = entries.sliding(k.value,1).map(str => str.mkString("")).filter(!_.contains("N")).map((_,1))
 
     kmers
   }
@@ -50,19 +42,5 @@ class ParKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
 
     kmerGroupped.collect().foreach(println)
     kmerGroupped
-
-    //    val kmersGroupped: Map[String, Int] =
-//      if (canonical) {
-//        kmers.groupBy(_._1).map { case (k, v) => k -> v.map {
-//          _._2
-//        }.sum
-//        }
-//      }
-//      else {
-//        kmers.groupBy(kmer => reverseComplement(kmer._1)).map { case (k, v) => k -> v.map {
-//          _._2
-//        }.sum
-//        }
-//      }
   }
 }
