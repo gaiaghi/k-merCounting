@@ -2,6 +2,7 @@ package counting
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.SparkSession
 import utils.GenomicUtils._
 
 class SeqKmerCounting(sequence: RDD[String], sparkContext: SparkContext,

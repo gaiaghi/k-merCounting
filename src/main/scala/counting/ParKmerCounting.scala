@@ -4,30 +4,30 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import utils.GenomicUtils.{reverseComplement, transformBases}
 
+
 class ParKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
                       k:Broadcast[Int]) extends CountingAlgorithm(sequence, sparkContext, k) with CountingType {
 
   override type T = RDD[(String,Int)]
 
   override def _kmerExtraction(sequence: RDD[String], k: Broadcast[Int]): T = {
-    val seq = sequence.map(line => line.split("(?=>)"))
-
+    val seq = sequence.flatMap(line => line.split("(?=>)"))
 
     //split the FASTA file into entries (genomflatMap(ic subsequence), finding each ">" header
-    val filteredSeq = {
-      seq.flatMap(
-        par => par.map(str => str.split("\n").filter(line => !line.startsWith(">"))
-        ).filter(arr => arr.nonEmpty))
-    }
+
+    val filteredSeq = seq.filter(line => !line.startsWith(">"))
+//    val filteredSeq = {
+//      seq.map(
+//        par => par.flatMap(str => str.split("\n").filter(line => !line.startsWith(">"))
+//        ).filter(arr => arr.nonEmpty))
+//    }
 
     //translate genomic bases
-    val entries = filteredSeq.map( str => str.map(transformBases))
+    val entries = filteredSeq.map(transformBases)
 
     //extracting kmers
     //TODO make persistent? o forse nella funzione che chiama poi quest'altra funzione?
-    val kmers = entries.flatMap(str => str.flatMap(
-      sec => sec.sliding(k.value,1).filter(kmer => !kmer.contains("N")) ).map((_,1))
-    )
+    val kmers = entries.flatMap( sec => sec.sliding(k.value,1).filter(kmer => !kmer.contains("N")) ).map((_,1) )
 
 //    kmers.collect().foreach(println)
 

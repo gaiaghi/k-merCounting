@@ -13,7 +13,7 @@ object Main {
 
     val counter:CountingAlgorithm =
       if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
-      else { new ParKmerCounting(genSeq,sc,k) }
+      else { new ParKmerCounting(genSeq, sc, k) }
 
     val res = countingType match {
       case "canonical" => {
@@ -96,17 +96,38 @@ object Main {
         )
     })
 
+
     //TODO dai la possibilità di svoglere il counting su più valori di k contemporaneamente?
     val broadcastK: Broadcast[Int] = sparkContext.broadcast(kLen.toInt)
 
+
+    //-------------------------------------------------------------
+//    import sparkSession.implicits._
+//    sparkContext.hadoopConfiguration.set("textinputformat.record.delimiter", ">")
+//    val df = sparkSession.read.option("delimiter", ">").textFile(fileName)
+//    df.show(1)
+//    println(df.count())
+//    val df2 = df.map(line => line.split("(?=>)"))
+//    //split the FASTA file into entries (genomflatMap(ic subsequence), finding each ">" header
+//    val filteredSeq = {
+//      df2.flatMap(
+//        par => par.map(str => str.split("\n").filter(line => !line.startsWith(">"))
+//        ).filter(arr => arr.nonEmpty))
+//    }
+//    val baseMap: Map[Char, Char] = Map('a' -> 'A', 't' -> 'T', 'c' -> 'C', 'g' -> 'G',
+//      'A' -> 'A', 'T' -> 'T', 'C' -> 'C', 'G' -> 'G').withDefaultValue('N')
+//    val complementMap: Map[Char, Char] = Map('A' -> 'T', 'C' -> 'G', 'G' -> 'C', 'T' -> 'A')
+//    def transformBases(seq: String): String = {
+//      seq map baseMap
+//    }
+//    val entries = filteredSeq.map(str => str.map(s => transformBases(s)))
+//    val prova = entries.map(str => str.flatMap(_.split("")))
+//    val ngrammer = new NGram().setN(3).setInputCol("value").setOutputCol("ngrams")
+//    val libKmers = ngrammer.transform(prova)
+    //-------------------------------------------------------------
+
     //execute k-mer counting
     val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
-
-    //TODO PROVA PAR
-    //----------------------------------------------
-//    val counter = new ParKmerCounting(filteredGenSeq, sparkContext, broadcastK)
-//    counter._kmerExtraction(filteredGenSeq, broadcastK)
-    //----------------------------------------------
 
 //    println("K-mer counting computed in "+results._2+ " sec. ")
 //    println("Saving results in file...")
