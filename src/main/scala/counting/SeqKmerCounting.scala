@@ -2,7 +2,6 @@ package counting
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
 import utils.GenomicUtils._
 
 class SeqKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
@@ -32,22 +31,8 @@ class SeqKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
         else {
           kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
         }
-//      kmersGroupped.foreach(println)
+
       sparkContext.parallelize(kmersGroupped.toSeq)
   }
 
 }
-
-
-//class SeqKmerCounting (sequence: RDD[String], sparkContext: SparkContext, k:Broadcast[Int]){
-//  import SeqKmerCounting._
-//
-//  def intermediateCount: T = kmerExtraction(sequence, k)
-//
-//  def canonicalCounter: RDD[(String, Int)] =
-//    counting(intermediateCount, sparkContext, canonical = true)
-//
-//  def nonCanonicalCounter: RDD[(String, Int)] =
-//    counting(intermediateCount, sparkContext, canonical = false)
-//
-//}

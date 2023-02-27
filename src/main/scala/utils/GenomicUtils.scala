@@ -1,11 +1,11 @@
 package utils
 
 object GenomicUtils {
-  val baseMap: Map[Char, Char] = Map('a' -> 'A', 't' -> 'T', 'c' -> 'C', 'g' -> 'G',
+  private val baseMap: Map[Char, Char] = Map('a' -> 'A', 't' -> 'T', 'c' -> 'C', 'g' -> 'G',
     'A' -> 'A', 'T' -> 'T', 'C' -> 'C', 'G' -> 'G').withDefaultValue('N')
 
 
-  val complementMap: Map[Char, Char] = Map('A' -> 'T', 'C' -> 'G', 'G' -> 'C', 'T' -> 'A')
+  private val complementMap: Map[Char, Char] = Map('A' -> 'T', 'C' -> 'G', 'G' -> 'C', 'T' -> 'A')
 
   def transformBases(seq: String): String = {
     /*

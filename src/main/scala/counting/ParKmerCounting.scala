@@ -14,9 +14,7 @@ class ParKmerCounting(sequence: RDD[String], sparkContext: SparkContext,
   override def _kmerExtraction(sequence: RDD[String], k: Broadcast[Int]): T = {
     val seq = sequence.flatMap(line => line.split("(?=>)"))
 
-    //split the FASTA file into entries (genomflatMap(ic subsequence), finding each ">" header
-
-    //per sliding RDD (B)
+    //remove header lines (starting with ">") and split the collection
     val filteredSeq = seq.filter(line => !line.startsWith(">")).flatMap(_.split(""))
 
     //translate genomic bases
