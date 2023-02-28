@@ -2,7 +2,8 @@ package utils
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions.{regexp_replace, split}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 import java.io.{FileWriter, PrintWriter}
 
@@ -45,8 +46,17 @@ object FileManager{
   * Read FASTA file into dataframe
   * (for library algorithm)
   * */
-//  def readFASTAtoDF(fileName: String):RDD[String]  = {
-//
-//  }
+  def readFASTAtoDF(fileName: String, sparkSession: SparkSession):Dataset[Row]  = {
+    import sparkSession.implicits._
+
+    // read genomic sequence (in "sequence reads")
+    val df = sparkSession.read.option("lineSep", ">").textFile(fileName)
+
+    //remove header lines
+    val genSeq = df.withColumn("value", regexp_replace($"value", "^.*\\n", ""))
+      .withColumn("value", regexp_replace($"value", "^;.+\\n", "")).filter(r => r.mkString.nonEmpty)
+
+    genSeq
+  }
 
 }
