@@ -1,6 +1,8 @@
 package utils
 
+import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.DataFrame
 
 import java.io.{FileWriter, PrintWriter}
 
@@ -25,5 +27,26 @@ object FileManager{
 
     pw.close()
   }
+
+  /*
+  * Read FASTA file into RDD
+  * (for sequential and parallel algorithms)
+  * */
+  def readFASTAtoRDD(fileName: String, sparkContext: SparkContext):RDD[String]  = {
+    //loading the fasta file
+    val genSeq = sparkContext.textFile(fileName)
+
+    //removing comment lines (but keeping headers ">")
+    genSeq.filter( line => !line.startsWith(";") )
+  }
+
+
+  /*
+  * Read FASTA file into dataframe
+  * (for library algorithm)
+  * */
+//  def readFASTAtoDF(fileName: String):RDD[String]  = {
+//
+//  }
 
 }

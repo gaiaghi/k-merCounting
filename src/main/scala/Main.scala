@@ -4,18 +4,38 @@ import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.ml.feature.NGram
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, collect_list, concat, concat_ws, explode, regexp_replace, sum, udf}
 import utils.SparkContextSetup
 
 
 object Main {
 
-  private def _invokeCounting(genSeq: RDD[String], sc: SparkContext, k:Broadcast[Int],
+  private def _invokeCounting(fileName: String, sc: SparkContext, ss: SparkSession, k:Broadcast[Int],
                               countingType: String, exeMode:String): (List[RDD[(String, Int)]],Double)={
 
-    val counter:CountingAlgorithm =
-      if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
-      else { new ParKmerCounting(genSeq, sc, k) }
+//    val counter:CountingAlgorithm =
+//      if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
+//      else { new ParKmerCounting(genSeq, sc, k) }
+
+    val counter:CountingAlgorithm = exeMode match {
+      case "sequential" =>  {
+        val genSeq = FileManager.readFASTAtoRDD(fileName,sc)
+        new SeqKmerCounting(genSeq, sc, k)}
+      case "parallel" => {
+        val genSeq = FileManager.readFASTAtoRDD(fileName,sc)
+        new ParKmerCounting(genSeq, sc, k)
+      }
+//      case "library" => {
+//        import ss.implicits._
+//        // read genomic sequence (in "sequence reads")
+//        val df = ss.read.option("lineSep", ">").textFile(fileName)
+//        println("ultima prova, davvero: " + df.count())
+//        println(df.show(5))
+//        //remove header lines
+//        val genSeq = df.withColumn("value", regexp_replace($"value", "^[a-zA-Z].+\\n", ""))
+//      }
+    }
 
     val res = countingType match {
       case "canonical" =>
@@ -64,6 +84,7 @@ object Main {
         case "saccharomyces" => "data/GCF_000146045.2_R64_genomic_Saccharomyces_cerevisiae.fna.gz"
         case "drosophila" => "data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"
         case "test" => "data/sample.fna"
+        case _ => "data/humantest.fna"
       }
     } else "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
@@ -84,17 +105,17 @@ object Main {
     println("\t- Spark Context initialized with parallelism: " + parallelism + "\n")
 
 
-    //loading the fasta file
-    val genSeq = sparkContext.textFile(fileName)
-
-    //removing comment lines (but keeping headers ">")
-    val filteredGenSeq = genSeq.filter(line => {
-      !(
-        line.startsWith("@") ||
-          line.startsWith("+") ||
-          line.startsWith(";")
-        )
-    })
+//    //loading the fasta file
+//    val genSeq = sparkContext.textFile(fileName)
+//
+//    //removing comment lines (but keeping headers ">")
+//    val filteredGenSeq = genSeq.filter(line => {
+//      !(
+//        line.startsWith("@") ||
+//          line.startsWith("+") ||
+//          line.startsWith(";")
+//        )
+//    })
 
 
     //TODO dai la possibilità di svoglere il counting su più valori di k contemporaneamente?
@@ -106,13 +127,14 @@ object Main {
 //    sparkContext.hadoopConfiguration.set("textinputformat.record.delimiter", ">")
 //    val df = sparkSession.read.option("delimiter", ">").textFile(fileName)
     val df2 = sparkSession.read.option("lineSep", ">").textFile(fileName)
-    println("ultima prova, davvero: "+df2.count())
-    println(df2.show(5))
-    val dff2 = df2.withColumn("value", regexp_replace($"value", "^[a-zA-Z].+\\n", ""))
+    val dff2 = df2.withColumn("value", regexp_replace($"value", "^.*\\n", ""))
+//    val dff2 = df2.withColumn("value", regexp_replace($"value", "^[a-zA-Z].+\\n", ""))
+//      .withColumn("value", regexp_replace($"value", "^;.+\\n",""))
+
+    println("ultima prova, davvero: " + dff2.count())
     println(dff2.show(5))
     //TODO dff2 sembra andare bene come suddivisione degli entires/sequence reads.
     // adesso devo provare a fare in modo che ogni riga diventi un Array e quindi applicare tutte le conversioni eccetera
-
 
     val df = sparkSession.read.textFile(fileName)
 //    df.show(1)
@@ -168,13 +190,14 @@ object Main {
     val mahh = mah.map(r => r.mkString.replace(" ","")).filter(kmer => !kmer.contains("N"))
     println(mahh.show(10))
     val mahhh = mahh.map(kmer => reverseComplement(kmer)).groupBy("value").count()
-    println(mahhh.show())
-
+//    println(mahhh.show())
+    val printa =  mahhh.map(r => r.mkString("(",",",")"))
+//    printa.rdd.collect().foreach(println)
     //-------------------------------------------------------------
 
     //execute k-mer counting
     //TODO scommenta
-//    val results = _invokeCounting(filteredGenSeq, sparkContext, broadcastK, countingType, exeMode)
+    val results = _invokeCounting(fileName, sparkContext, sparkSession, broadcastK, countingType, exeMode)
 
 //    println("K-mer counting computed in "+results._2+ " sec. ")
 //    println("Saving results in file...")
