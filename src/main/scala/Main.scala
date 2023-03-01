@@ -118,6 +118,10 @@ object Main {
     FileManager.writeResults(outPath, countingType, results)
     println("Results saved in "+outPath+" file.")
 
+    //TODO
+    //  1. controlla la questione del timing nel caso parallel
+    //  2. prova a mettere seq e library tutto in una riga, e poi ad ogni \n per vedere se danno ancora out of memory
+    //  3. riprova con homo sapiens, quando hai il timing funzionante
 
     sparkSession.stop()
   }

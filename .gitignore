@@ -196,3 +196,5 @@ spark-warehouse/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/scala,spark,intellij+all
+
+data/GCF_000001405.40_GRCh38.p14_genomic_homo_sapiens.fna.gz
