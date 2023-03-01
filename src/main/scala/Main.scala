@@ -2,10 +2,8 @@ import counting.{CountingAlgorithm, NGramCounting, ParKmerCounting, SeqKmerCount
 import utils.FileManager
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
-import org.apache.spark.ml.feature.NGram
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col, collect_list, concat, concat_ws, explode, regexp_replace, sum, udf}
 import utils.SparkContextSetup
 
 
@@ -44,7 +42,7 @@ object Main {
       case "both" =>
         val startTime = System.nanoTime
                 val canonicalKmers = counter.canonicalCounter
-        val kmers = counter.nonCanonicalCounter
+                val kmers = counter.nonCanonicalCounter
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(canonicalKmers,kmers), exeTime)
     }
@@ -73,6 +71,7 @@ object Main {
         case "saccharomyces" => "data/GCF_000146045.2_R64_genomic_Saccharomyces_cerevisiae.fna.gz"
         case "drosophila" => "data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"
         case "test" => "data/sample.fna"
+        case "human" => "data/GCF_000001405.40_GRCh38.p14_genomic_homo_sapiens.fna.gz"
         case _ => "data/humantest.fna"
       }
     } else "data/humantest.fna"
@@ -105,16 +104,19 @@ object Main {
 
 
     //execute k-mer counting
+    val startTime = System.nanoTime
     val results = _invokeCounting(fileName, sparkContext, sparkSession, broadcastK, countingType, exeMode)
+    val exeTime = (System.nanoTime - startTime) / 1e9d
 
-//    println("K-mer counting computed in "+results._2+ " sec. ")
-//    println("Saving results in file...")
+    println("boh non capisco "+exeTime)
+    println("K-mer counting computed in "+results._2+ " sec. ")
+    println("Saving results in file...")
 
     //TODO controlla come fare nel caso del cloud
     //save the results
-//    val outPath = "output/results.txt"
-//    FileManager.writeResults(outPath, countingType, results)
-//    println("Results saved in "+outPath+" file.")
+    val outPath = "output/results.txt"
+    FileManager.writeResults(outPath, countingType, results)
+    println("Results saved in "+outPath+" file.")
 
 
     sparkSession.stop()

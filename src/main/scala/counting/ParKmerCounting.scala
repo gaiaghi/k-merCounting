@@ -43,8 +43,6 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
       }
     }
 
-    //TODO remove print
-    kmerGroupped.collect().foreach(println)
     kmerGroupped
   }
 

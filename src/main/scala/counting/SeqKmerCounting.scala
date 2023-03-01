@@ -38,8 +38,6 @@ class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
           kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
         }
 
-    //TODO remove print
-    kmersGroupped.foreach(println)
       sparkContext.parallelize(kmersGroupped.toSeq)
   }
 

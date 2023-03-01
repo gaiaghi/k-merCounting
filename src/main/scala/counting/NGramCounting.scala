@@ -44,11 +44,9 @@ class NGramCounting(fileName: String, sparkContext: SparkContext, sparkSession: 
       }
     }
 
-    //TODO rimuovi stampa
-    kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt)).foreach(println)
-
     kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt))
 
+    kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt))
     //    val printa = mahhh.map(r => r.mkString("(", ",", ")"))
   }
 
