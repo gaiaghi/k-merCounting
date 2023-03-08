@@ -4,7 +4,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.ml.feature.NGram
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.functions.{col, explode}
+import org.apache.spark.sql.functions.{col, collect_list, concat_ws, explode}
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 import utils.FileManager
 import utils.GenomicUtils.{reverseComplement, transformBases}
@@ -20,7 +20,7 @@ class NGramCounting(fileName: String, sparkContext: SparkContext, sparkSession: 
   override val sequence: S = FileManager.readFASTAtoDF(fileName,sparkSession)
 
   override def _kmerExtraction(k: Broadcast[Int]): T = {
-
+    
     val genSeq = sequence.map(r => transformBases(r.mkString).split(""))
 
     val ngrammer = new NGram().setN(k.value).setInputCol("value").setOutputCol("ngrams")

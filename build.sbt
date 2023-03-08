@@ -9,7 +9,5 @@ lazy val root = (project in file("."))
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.1"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.1"
-
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.3.2"
-
-
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.32.0"

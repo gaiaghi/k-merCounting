@@ -10,7 +10,7 @@ import utils.SparkContextSetup
 object Main {
 
   private def _invokeCounting(fileName: String, sc: SparkContext, ss: SparkSession, k:Broadcast[Int],
-                              countingType: String, exeMode:String): (List[RDD[(String, Int)]],Double)={
+                              countingType: String, exeMode:String): (List[Array[(String, Int)]],Double)={
 
 //    val counter:CountingAlgorithm =
 //      if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
@@ -30,19 +30,20 @@ object Main {
     val res = countingType match {
       case "canonical" =>
         val startTime = System.nanoTime
-                val kmers = counter.canonicalCounter
+        val kmers = counter.canonicalCounter.collect()
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(kmers), exeTime)
 
       case "non-canonical" =>
         val startTime = System.nanoTime
-                val kmers = counter.nonCanonicalCounter
+        val kmers = counter.nonCanonicalCounter.collect()
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(kmers), exeTime)
       case "both" =>
         val startTime = System.nanoTime
-                val canonicalKmers = counter.canonicalCounter
-                val kmers = counter.nonCanonicalCounter
+        val canonicalKmers = counter.canonicalCounter.collect()
+        val kmers = counter.nonCanonicalCounter.collect()
+        //TODO mettere un counter.bothCounter che fa entrambi i casi in una chiamata? + persistent data
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(canonicalKmers,kmers), exeTime)
     }
@@ -99,7 +100,6 @@ object Main {
     println("\t- Spark Context initialized with parallelism: " + parallelism + "\n")
 
 
-    //TODO dai la possibilità di svoglere il counting su più valori di k contemporaneamente?
     val broadcastK: Broadcast[Int] = sparkContext.broadcast(kLen.toInt)
 
 
@@ -108,7 +108,6 @@ object Main {
     val results = _invokeCounting(fileName, sparkContext, sparkSession, broadcastK, countingType, exeMode)
     val exeTime = (System.nanoTime - startTime) / 1e9d
 
-    println("boh non capisco "+exeTime)
     println("K-mer counting computed in "+results._2+ " sec. ")
     println("Saving results in file...")
 
@@ -119,9 +118,8 @@ object Main {
     println("Results saved in "+outPath+" file.")
 
     //TODO
-    //  1. controlla la questione del timing nel caso parallel
-    //  2. prova a mettere seq e library tutto in una riga, e poi ad ogni \n per vedere se danno ancora out of memory
     //  3. riprova con homo sapiens, quando hai il timing funzionante
+    //  4. ottimizza per spark
 
     sparkSession.stop()
   }

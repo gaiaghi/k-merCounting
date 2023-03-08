@@ -12,7 +12,7 @@ object FileManager{
   /*
   * Save results to local file
   * */
-  def writeResults(path:String, countingType:String, results:(List[RDD[(String, Int)]], Double)
+  def writeResults(path:String, countingType:String, results:(List[Array[(String, Int)]], Double)
                   ): Unit = {
     val pw = new PrintWriter(new FileWriter(path))
 
@@ -24,7 +24,7 @@ object FileManager{
     }
 
     pw.println("Execution time: " + results._2 + "sec.\n")
-    toPrint.foreach(m => (pw.println(m._1), m._2.collect().foreach(k => (pw.print("(" + k._1 + ", "), pw.println(k._2 + ")")))))
+    toPrint.foreach(m => (pw.println(m._1), m._2.foreach(k => (pw.print("(" + k._1 + ", "), pw.println(k._2 + ")")))))
 
     pw.close()
   }

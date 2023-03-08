@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/GCF_000001405.40_GRCh38.p14_genomic_homo_sapiens.fna.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/results.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sample.fna" beforeDir="false" afterPath="$PROJECT_DIR$/data/sample.fna" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/results.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +74,7 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="k-merCounting" />
-      <option name="PROGRAM_PARAMETERS" value="local human 3 canonical 4 parallel" />
+      <option name="PROGRAM_PARAMETERS" value="local saccharomyces 3 non-canonical 4 library" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -110,6 +112,12 @@
       <workItem from="1677490229740" duration="22634000" />
       <workItem from="1677578248773" duration="18628000" />
       <workItem from="1677665943704" duration="7284000" />
+      <workItem from="1677676380898" duration="60000" />
+      <workItem from="1677676970687" duration="1555000" />
+      <workItem from="1677679031079" duration="4902000" />
+      <workItem from="1677751586494" duration="605000" />
+      <workItem from="1678102634649" duration="883000" />
+      <workItem from="1678266837749" duration="11522000" />
     </task>
     <servers />
   </component>
