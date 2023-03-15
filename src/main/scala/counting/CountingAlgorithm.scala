@@ -10,6 +10,7 @@ abstract class CountingAlgorithm ( val fileName: String, val sparkContext: Spark
   type T  //extracted kmers
   type S  //sequence type
   val sequence: S
+  val kmers: T
   def _kmerExtraction(k:Broadcast[Int]): T
   def _counting(kmers: T, canonical: Boolean): RDD[(String, Int)]
 

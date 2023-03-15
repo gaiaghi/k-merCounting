@@ -12,10 +12,6 @@ object Main {
   private def _invokeCounting(fileName: String, sc: SparkContext, ss: SparkSession, k:Broadcast[Int],
                               countingType: String, exeMode:String): (List[Array[(String, Int)]],Double)={
 
-//    val counter:CountingAlgorithm =
-//      if (exeMode == "sequential") { new SeqKmerCounting(genSeq, sc, k)}
-//      else { new ParKmerCounting(genSeq, sc, k) }
-
     val counter: CountingAlgorithm = exeMode match {
       case "sequential" =>
         new SeqKmerCounting(fileName, sc, k)
@@ -56,7 +52,7 @@ object Main {
     /*
     * args(0) = master
     * args(1) = path of the fasta file. Default: data/humantest.fna
-    * args(2) = k value (length of the kmers). Default: //TODO scrivi i default values
+    * args(2) = k value (length of the kmers). Default: 5
     * args(3) = counting type ("canonical", "non-canonical", "both"). Default: "non-canonical"
     * args(4) = parallelism. Default: 4
     * args(5) = execution mode ("parallel", "sequential", "library"). Default: sequential
@@ -76,7 +72,7 @@ object Main {
         case _ => "data/humantest.fna"
       }
     } else "data/humantest.fna"
-    val kLen = if (args.length > 2) args(2) else "3" //TODO controlla i valori k dei kmer più usati
+    val kLen = if (args.length > 2) args(2) else "5"
     val countingType = if (args.length > 3 && (args(3) == "canonical" || args(3) == "both")) args(3) else "non-canonical"
     val parallelism = if (args.length > 4) args(4) else "4"
 //    val exeMode = if (args.length > 5 && args(5) == "parallel") args(5) else "sequential"
@@ -118,8 +114,7 @@ object Main {
     println("Results saved in "+outPath+" file.")
 
     //TODO
-    //  3. riprova con homo sapiens, quando hai il timing funzionante
-    //  4. ottimizza per spark
+    //  4. cloud: come fare deply, come salvare file, che statistiche prendere ecc
 
     sparkSession.stop()
   }

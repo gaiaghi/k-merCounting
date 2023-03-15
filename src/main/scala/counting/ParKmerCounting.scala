@@ -1,9 +1,10 @@
 package counting
-import org.apache.spark.SparkContext
+import org.apache.spark.{RangePartitioner, SparkContext}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.mllib.rdd.RDDFunctions.fromRDD
 import org.apache.spark.rdd.RDD
-import utils.FileManager
+import org.apache.spark.storage.StorageLevel
+import utils.{FileManager, SparkContextSetup}
 import utils.GenomicUtils.{reverseComplement, transformBases}
 
 
@@ -15,6 +16,7 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
 
   //read the FASTA file
   override val sequence: S = FileManager.readFASTAtoRDD(fileName, sparkContext)
+  override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction( k: Broadcast[Int]): T = {
     val seq = sequence.flatMap(line => line.split("(?=>)"))
@@ -26,11 +28,10 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
     val entries = filteredSeq.map(transformBases)
 
     //extracting kmers
-    //TODO make persistent? o forse nella funzione che chiama poi quest'altra funzione?
-    //TODO usare mapPartition?
     val kmers = entries.sliding(k.value,1).map(str => str.mkString("")).filter(!_.contains("N")).map((_,1))
-
-    kmers
+    val partitionedKmers = kmers.partitionBy(new RangePartitioner(SparkContextSetup.PARTITIONS, kmers))
+      .persist(StorageLevel.MEMORY_AND_DISK)
+    partitionedKmers
   }
 
   override def _counting(kmers: T, canonical: Boolean): RDD[(String, Int)] = {

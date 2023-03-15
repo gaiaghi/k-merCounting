@@ -18,9 +18,10 @@ class NGramCounting(fileName: String, sparkContext: SparkContext, sparkSession: 
 
   //read the FASTA file
   override val sequence: S = FileManager.readFASTAtoDF(fileName,sparkSession)
+  override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction(k: Broadcast[Int]): T = {
-    
+
     val genSeq = sequence.map(r => transformBases(r.mkString).split(""))
 
     val ngrammer = new NGram().setN(k.value).setInputCol("value").setOutputCol("ngrams")

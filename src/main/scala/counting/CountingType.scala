@@ -5,8 +5,8 @@ import org.apache.spark.rdd.RDD
 trait CountingType extends CountingAlgorithm {
 
   override def canonicalCounter: RDD[(String, Int)] =
-    _counting(_kmerExtraction(k), canonical = true)
+    _counting(kmers, canonical = true)
 
   override def nonCanonicalCounter: RDD[(String, Int)] =
-    _counting(_kmerExtraction(k), canonical = false)
+    _counting(kmers, canonical = false)
 }
