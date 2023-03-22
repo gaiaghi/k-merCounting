@@ -2,8 +2,8 @@ package utils
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.functions.{regexp_replace, split}
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
+import org.apache.spark.sql.functions.regexp_replace
+import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
 import java.io.{FileWriter, PrintWriter}
 
@@ -12,22 +12,19 @@ object FileManager{
   /*
   * Save results to local file
   * */
-  def writeResults(path:String, countingType:String, results:(List[Array[(String, Int)]], Double)
+  def writeResults(path:String, countingType:String, results:(List[Array[(String, Int)]], Double), sparkContext:SparkContext
                   ): Unit = {
-    val pw = new PrintWriter(new FileWriter(path))
 
-    val toPrint = if (countingType == "non-canonical") {
+    val withHeaders = sparkContext.parallelize(if (countingType == "non-canonical") {
       List("\n> Non-canonical k-mers:").zip(results._1)
     }
     else {
       List("\n> Canonical k-mers:", "\n> Non-canonical k-mers:").zip(results._1)
-    }
-
-    pw.println("Execution time: " + results._2 + "sec.\n")
-    toPrint.foreach(m => (pw.println(m._1), m._2.foreach(k => (pw.print("(" + k._1 + ", "), pw.println(k._2 + ")")))))
-
-    pw.close()
+    })
+    val res = withHeaders.map(m => m._1 + m._2.map(k => ("(" + k._1 + ", " + k._2.toString + ")")).mkString("", "\n", "")+"\n")
+    res.coalesce(1, shuffle = true).saveAsTextFile(path)
   }
+
 
   /*
   * Read FASTA file into RDD

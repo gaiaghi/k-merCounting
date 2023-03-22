@@ -39,7 +39,6 @@ object Main {
         val startTime = System.nanoTime
         val canonicalKmers = counter.canonicalCounter.collect()
         val kmers = counter.nonCanonicalCounter.collect()
-        //TODO mettere un counter.bothCounter che fa entrambi i casi in una chiamata? + persistent data
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(canonicalKmers,kmers), exeTime)
     }
@@ -82,6 +81,7 @@ object Main {
         case _ => "sequential"
       }
     } else "sequential"
+    val outPath = if (args.length > 6) args(6) else "output_dir"
 
     //creating spark session
     val sparkSession = SparkContextSetup.sparkSession(master, parallelism.toInt)
@@ -109,8 +109,7 @@ object Main {
 
     //TODO controlla come fare nel caso del cloud
     //save the results
-    val outPath = "output/results.txt"
-    FileManager.writeResults(outPath, countingType, results)
+    FileManager.writeResults(outPath, countingType, results, sparkContext)
     println("Results saved in "+outPath+" file.")
 
     //TODO

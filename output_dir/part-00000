@@ -1,8 +1,5 @@
-Execution time: 19.0197686sec.
 
-
-> Canonical k-mers:
-(GTA, 345075)
+> Canonical k-mers:(GTA, 345075)
 (AAT, 717553)
 (CTA, 312415)
 (TAA, 543807)
@@ -35,8 +32,8 @@ Execution time: 19.0197686sec.
 (AGA, 490962)
 (CCG, 141385)
 
-> Non-canonical k-mers:
-(AGC, 139290)
+
+> Non-canonical k-mers:(AGC, 139290)
 (ACA, 208983)
 (ACC, 141082)
 (AAC, 219308)
@@ -100,3 +97,4 @@ Execution time: 19.0197686sec.
 (TTG, 279391)
 (TCT, 244529)
 (TGA, 244646)
+
