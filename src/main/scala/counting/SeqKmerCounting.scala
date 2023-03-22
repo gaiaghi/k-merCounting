@@ -17,17 +17,14 @@ class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
   override def _kmerExtraction( k:Broadcast[Int]): T = {
 
     //split the FASTA file into entries (genomic subsequence), and removing each ">" header
-//    val seq = sequence.collect().mkString("\n").split("(?=>)")
     val seq = sequence.collect().mkString("\n")
 
     val filteredSeq = seq.replaceAll(">.*\\n","").replaceAll("\n", "")
     //translate genomic bases
-//    val entries = filteredSeq.map(str => transformBases(str))
     val entries = transformBases(filteredSeq)
 
 
     //extracting kmers
-//    entries.flatMap(_.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)))
     entries.sliding(k.value, 1).filter(kmer => !kmer.contains("N")).map((_, 1)).toArray
 
   }

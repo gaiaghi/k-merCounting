@@ -13,10 +13,6 @@ abstract class CountingAlgorithm ( val fileName: String, val sparkContext: Spark
   val kmers: T
   def _kmerExtraction(k:Broadcast[Int]): T
   def _counting(kmers: T, canonical: Boolean): RDD[(String, Int)]
-
-  //TODO da implementare negli oggetti
-//  def toString: String
-
   def canonicalCounter: RDD[(String, Int)]
   def nonCanonicalCounter: RDD[(String, Int)]
 

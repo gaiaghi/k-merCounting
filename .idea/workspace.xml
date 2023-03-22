@@ -6,9 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/results.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/._SUCCESS.crc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/.part-00000.crc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/_SUCCESS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/part-00000" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/CountingAlgorithm.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/CountingAlgorithm.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/SeqKmerCounting.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -115,7 +120,7 @@
       <workItem from="1678102634649" duration="883000" />
       <workItem from="1678266837749" duration="24783000" />
       <workItem from="1678892427184" duration="8989000" />
-      <workItem from="1679479109933" duration="4206000" />
+      <workItem from="1679479109933" duration="5252000" />
     </task>
     <servers />
   </component>

@@ -4,7 +4,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.ml.feature.NGram
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.functions.{col, collect_list, concat_ws, explode}
+import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 import utils.FileManager
 import utils.GenomicUtils.{reverseComplement, transformBases}
@@ -48,7 +48,6 @@ class NGramCounting(fileName: String, sparkContext: SparkContext, sparkSession: 
     kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt))
 
     kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt))
-    //    val printa = mahhh.map(r => r.mkString("(", ",", ")"))
   }
 
 }

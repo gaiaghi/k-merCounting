@@ -5,8 +5,6 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.functions.regexp_replace
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
-import java.io.{FileWriter, PrintWriter}
-
 object FileManager{
 
   /*
