@@ -52,13 +52,24 @@ object Main {
     * args(1) = path of the fasta file. Default: data/humantest.fna
     * args(2) = k value (length of the kmers). Default: 5
     * args(3) = counting type ("canonical", "non-canonical", "both"). Default: "non-canonical"
-    * args(4) = parallelism. Default: 4
+    * args(4) = partitions. Default: 4
     * args(5) = execution mode ("parallel", "sequential", "library"). Default: sequential
     * args(6) = ouput file path. Default: "output_dir"
     * */
 
     //read arguments
-    val master = args(0)
+    val master = "local"
+    try {
+      val master = args(0)
+    } catch {
+      case e: ArrayIndexOutOfBoundsException =>
+        println("Specify the correct parameters: \n" +
+          "    1- master\n    2- path of the fasta file\n    3- k value (length of the kmers). Default: 5\n    4- counting type (\"canonical\", \"non-canonical\", \"both\"). Default: non-canonical\n" +
+          "    5- partitions. Default: 4\n    6- execution mode (\"parallel\", \"sequential\", \"library\"). Default: sequential\n" +
+          "    7- ouput file path. Default: \"output_dir\"")
+        System.exit(1)
+    }
+
     val fileName = if (args.length > 1) {
       args(1) match {
         //local only shortcuts:
