@@ -26,7 +26,7 @@ object FileManager{
 
   /*
   * Read FASTA file into RDD
-  * (for sequential and parallel algorithms)
+  * (for sequential and distributed algorithms)
   * */
   def readFASTAtoRDD(fileName: String, sparkContext: SparkContext):RDD[String]  = {
     //loading the fasta file

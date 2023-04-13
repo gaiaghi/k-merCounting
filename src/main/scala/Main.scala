@@ -15,7 +15,7 @@ object Main {
       case "sequential" =>
         new SeqKmerCounting(fileName, sc, k)
 
-      case "parallel" =>
+      case "distributed" =>
         new ParKmerCounting(fileName, sc, k)
 
       case "library" =>
@@ -53,7 +53,7 @@ object Main {
     * args(2) = k value (length of the kmers). Default: 5
     * args(3) = counting type ("canonical", "non-canonical", "both"). Default: "non-canonical"
     * args(4) = partitions. Default: 4
-    * args(5) = execution mode ("parallel", "sequential", "library"). Default: sequential
+    * args(5) = execution mode ("distributed", "sequential", "library"). Default: sequential
     * args(6) = ouput file path. Default: "output_dir"
     * */
 
@@ -65,7 +65,7 @@ object Main {
       case e: ArrayIndexOutOfBoundsException =>
         println("Specify the correct parameters: \n" +
           "    1- master\n    2- path of the fasta file\n    3- k value (length of the kmers). Default: 5\n    4- counting type (\"canonical\", \"non-canonical\", \"both\"). Default: non-canonical\n" +
-          "    5- partitions. Default: 4\n    6- execution mode (\"parallel\", \"sequential\", \"library\"). Default: sequential\n" +
+          "    5- partitions. Default: 4\n    6- execution mode (\"distributed\", \"sequential\", \"library\"). Default: sequential\n" +
           "    7- ouput file path. Default: \"output_dir\"")
         System.exit(1)
     }
@@ -85,7 +85,7 @@ object Main {
     val parallelism = if (args.length > 4) args(4) else "4"
     val exeMode = if (args.length > 5){
       args(5) match {
-        case "parallel" | "sequential" | "library" => args(5)
+        case "distributed" | "sequential" | "library" => args(5)
         case _ => "sequential"
       }
     } else "sequential"
