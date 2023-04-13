@@ -11,6 +11,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/._SUCCESS.crc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/.part-00000.crc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/_SUCCESS" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_dir/part-00000" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" afterDir="false" />
     </list>
@@ -73,7 +77,7 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="k-merCounting" />
-      <option name="PROGRAM_PARAMETERS" value="local[2] saccharomyces 3 both 4 distributed" />
+      <option name="PROGRAM_PARAMETERS" value="local[2] saccharomyces 3 non-canonical 4 distributed" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -123,7 +127,7 @@
       <workItem from="1679916448397" duration="1763000" />
       <workItem from="1680001794966" duration="4318000" />
       <workItem from="1681378628422" duration="1213000" />
-      <workItem from="1681418018011" duration="270000" />
+      <workItem from="1681418018011" duration="3558000" />
     </task>
     <servers />
   </component>

@@ -10,14 +10,15 @@ object FileManager{
   /*
   * Save results to local file
   * */
-  def writeResults(path:String, countingType:String, results:(List[Array[(String, Int)]], Double), sparkContext:SparkContext
+  def writeResults(path:String, countingType:String, exeMode:String, data:String, results:(List[Array[(String, Int)]], Double), sparkContext:SparkContext
                   ): Unit = {
-
+    //header: execution time, counting type, execution mode, data file,
+    val infoStr = "# "+ results._2 + ", "+ countingType+  ", "+ exeMode+ ", " + data
     val withHeaders = sparkContext.parallelize(if (countingType == "non-canonical") {
-      List("\n> Non-canonical k-mers:").zip(results._1)
+      List(infoStr+"\n> Non-canonical k-mers:\n").zip(results._1)
     }
     else {
-      List("\n> Canonical k-mers:", "\n> Non-canonical k-mers:").zip(results._1)
+      List(infoStr+"\n> Canonical k-mers:\n", "\n> Non-canonical k-mers:\n").zip(results._1)
     })
     val res = withHeaders.map(m => m._1 + m._2.map(k => ("(" + k._1 + ", " + k._2.toString + ")")).mkString("", "\n", "")+"\n")
     res.coalesce(1, shuffle = true).saveAsTextFile(path)

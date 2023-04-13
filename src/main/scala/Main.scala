@@ -115,7 +115,7 @@ object Main {
     println("Saving results in file...")
 
     //save the results
-    FileManager.writeResults(outPath, countingType, results, sparkContext)
+    FileManager.writeResults(outPath, countingType, exeMode, fileName, results, sparkContext)
     println("Results saved in "+outPath+".")
 
     sparkSession.stop()
