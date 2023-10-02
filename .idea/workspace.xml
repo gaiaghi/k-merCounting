@@ -10,13 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce68afff-6051-46d0-b313-067aad474967" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/k-merCounting.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output_dir/._SUCCESS.crc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/output_dir/.part-00000.crc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/output_dir/_SUCCESS" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/output_dir/part-00000" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/FileManager.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/NGramCounting.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/counting/ParKmerCounting.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/utils/SparkContextSetup.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/utils/SparkContextSetup.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +35,23 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="SBT">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="k-merCounting" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,7 +77,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Utente/IdeaProjects/k-merCounting/data&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Utente/Downloads/k-merCounting-master&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -64,7 +86,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.language&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;sbt.project.settings.configurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -77,7 +99,7 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="k-merCounting" />
-      <option name="PROGRAM_PARAMETERS" value="local[2] saccharomyces 3 non-canonical 4 distributed" />
+      <option name="PROGRAM_PARAMETERS" value="local[4] C:\Users\Utente\OneDrive\Desktop\saccharomyces.gz 3 non-canonical 4 distributed" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -127,11 +149,40 @@
       <workItem from="1679916448397" duration="1763000" />
       <workItem from="1680001794966" duration="4318000" />
       <workItem from="1681378628422" duration="1213000" />
-      <workItem from="1681418018011" duration="3558000" />
+      <workItem from="1681418018011" duration="4137000" />
+      <workItem from="1681468820566" duration="616000" />
+      <workItem from="1681921868845" duration="31000" />
+      <workItem from="1683017687523" duration="1202000" />
+      <workItem from="1683797418074" duration="51000" />
+      <workItem from="1683816995599" duration="62000" />
+      <workItem from="1684090746236" duration="51000" />
+      <workItem from="1684945766584" duration="21000" />
+      <workItem from="1687169151492" duration="16000" />
+      <workItem from="1687870023294" duration="11000" />
+      <workItem from="1687946306211" duration="15000" />
+      <workItem from="1689259285874" duration="1000" />
+      <workItem from="1689329359825" duration="21000" />
+      <workItem from="1690200691891" duration="41000" />
+      <workItem from="1692882556629" duration="29885000" />
+      <workItem from="1694079217671" duration="12000" />
+      <workItem from="1694079895478" duration="1026000" />
+      <workItem from="1694080987107" duration="1173000" />
+      <workItem from="1694104369098" duration="707000" />
+      <workItem from="1694105320616" duration="3630000" />
+      <workItem from="1694111724163" duration="2098000" />
+      <workItem from="1694177988066" duration="3446000" />
+      <workItem from="1695905422371" duration="3513000" />
+      <workItem from="1695920204414" duration="1685000" />
+      <workItem from="1695922060808" duration="5253000" />
+      <workItem from="1696257622853" duration="777000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -4,6 +4,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import utils.SparkContextSetup
+import scala.collection.parallel.CollectionConverters._
 
 
 object Main {
@@ -58,9 +59,9 @@ object Main {
     * */
 
     //read arguments
-    val master = "local"
+    var master = "local"
     try {
-      val master = args(0)
+      master = args(0)
     } catch {
       case e: ArrayIndexOutOfBoundsException =>
         println("Specify the correct parameters: \n" +
@@ -77,7 +78,7 @@ object Main {
         case "drosophila" => "data/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic_drosophila_melanogaster.fna.gz"
         case "test" => "data/sample.fna"
         case "human" => "data/GCF_000001405.40_GRCh38.p14_genomic_homo_sapiens.fna.gz"
-        case _ => "data/humantest.fna"
+        case _ => args(1)
       }
     } else "data/humantest.fna"
     val kLen = if (args.length > 2) args(2) else "5"

@@ -19,11 +19,11 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
   override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction( k: Broadcast[Int]): T = {
-    val seq = sequence.flatMap(line => line.split("(?=>)"))
+
+    val seq = sequence
 
     //remove header lines (starting with ">") and split the collection
     val filteredSeq = seq.filter(line => !line.startsWith(">")).flatMap(_.split(""))
-
     //translate genomic bases
     val entries = filteredSeq.map(transformBases)
 

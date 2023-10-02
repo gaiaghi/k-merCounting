@@ -7,6 +7,9 @@ lazy val root = (project in file("."))
     name := "k-merCounting"
   )
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.1"
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.1"
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.3.2"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.3"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.3"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.3.3"
+libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
+
+//libraryDependencies += "org.apache.spark" %% "spark-yarn" % "3.4.1" % "provided"
