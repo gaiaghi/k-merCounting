@@ -1,9 +1,10 @@
-import counting.{CountingAlgorithm, NGramCounting, ParKmerCounting, SeqKmerCounting}
+import counting.{CountingAlgorithm, DistKmerCounting, NGramCounting, ParKmerCounting, SeqKmerCounting}
 import utils.FileManager
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import utils.SparkContextSetup
+
 import scala.collection.parallel.CollectionConverters._
 
 
@@ -17,10 +18,14 @@ object Main {
         new SeqKmerCounting(fileName, sc, k)
 
       case "distributed" =>
+        new DistKmerCounting(fileName, sc, k)
+
+      case "parallel" =>
         new ParKmerCounting(fileName, sc, k)
 
       case "library" =>
         new NGramCounting(fileName, sc, ss, k)
+
     }
 
     val res = countingType match {
@@ -35,6 +40,7 @@ object Main {
         val kmers = counter.nonCanonicalCounter.collect()
         val exeTime = (System.nanoTime - startTime) / 1e9d
         (List(kmers), exeTime)
+
       case "both" =>
         val startTime = System.nanoTime
         val canonicalKmers = counter.canonicalCounter.collect()
@@ -86,7 +92,7 @@ object Main {
     val parallelism = if (args.length > 4) args(4) else "4"
     val exeMode = if (args.length > 5){
       args(5) match {
-        case "distributed" | "sequential" | "library" => args(5)
+        case "distributed" | "sequential" | "library" | "parallel" => args(5)
         case _ => "sequential"
       }
     } else "sequential"
@@ -102,6 +108,7 @@ object Main {
     println("\t- data path: " + fileName)
     println("\t- output path: " + outPath)
     println("\t- counting type: " + countingType)
+    println("\t- k value: " + kLen)
     println("\t- execution mode: "+ exeMode)
     println("\t- Spark Context initialized with parallelism: " + parallelism + "\n")
 

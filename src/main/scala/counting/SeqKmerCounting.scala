@@ -4,6 +4,7 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import utils.FileManager
 import utils.GenomicUtils._
+import scala.collection.parallel.CollectionConverters._
 
 class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
                       k:Broadcast[Int]) extends CountingAlgorithm(fileName, sparkContext, k) with CountingType {
@@ -39,7 +40,7 @@ class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
           kmers.groupBy(_._1).map { case (k, v) => k -> v.map {_._2}.sum }
         }
 
-      sparkContext.parallelize(kmersGroupped.toSeq)
+      sparkContext.parallelize(kmersGroupped.toSeq).sortBy(_._1)
   }
 
 }

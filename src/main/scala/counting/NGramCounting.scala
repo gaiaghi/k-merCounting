@@ -50,7 +50,7 @@ class NGramCounting(fileName: String, sparkContext: SparkContext, sparkSession: 
       }
     }
 
-    kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt))
+    kmerGroupped.map(r => (r(0).toString, r(1).toString.toInt)).sortBy(_._1)
   }
 
 }
