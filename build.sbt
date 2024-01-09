@@ -1,15 +1,12 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "0.1.1-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / scalaVersion := "2.12.18"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "k-merCounting"
+    name := "kmercounting"
   )
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.3"
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.3"
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.3.3"
-libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
-
-//libraryDependencies += "org.apache.spark" %% "spark-yarn" % "3.4.1" % "provided"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.2"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.3.2"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.3.2"
