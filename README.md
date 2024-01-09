@@ -1,4 +1,4 @@
-Project exam for the course "Scalable and Cloud Programming" (University of Bologna).
+Exam project for the course "Scalable and Cloud Programming" (University of Bologna).
 
 # Introduction
 The project aims at developing a Scala + Spark application, implementing the k-mer counting algorithm by exploiting the map-reduce programming model, to later test its scalability in the cloud context.
