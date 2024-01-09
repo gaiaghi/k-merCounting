@@ -72,6 +72,11 @@ where:
 *    `$MASTER_MACHINE_TYPE` specify, respectively, the master machine type and the workers machine type ([available machine families](https://cloud.google.com/compute/docs/machine-resource));
 *    `$NUM_WORKERS` is the number of worker nodes of the cluster.
 
+
+
+_**Note**_: this project was developed in according with the cluster image `2.1-debian11` (more details at [2.1.x release versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-release-2.1?hl=en)). Updates on the default Dataproc cluster image may cause errors in the execution of the project. If so, it is possible to specify the chosen image for the cluster to be created ([Selecting versions](https://cloud.google.com/dataproc/docs/concepts/versioning/overview#selecting_versions)).
+
+
 ### 4. Submitting the job to the cluster
 The command to submit a job to the created cluster is:
 ```
