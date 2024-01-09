@@ -25,9 +25,9 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
     val filteredSeq = seq.filter(line => !line.startsWith(">")).flatMap(_.split(""))
     //translate genomic bases
     val entries = filteredSeq.map(transformBases)
-
+    
     //extracting kmers
-    entries.iterator.sliding(k.value, 1).map(str => str.mkString("")).filter(!_.contains("N")).map((_, 1)).toArray.par
+    entries.iterator.sliding(k.value, 1).toParArray.map(str => str.mkString("")).filter(!_.contains("N")).map((_, 1))
 
   }
 
