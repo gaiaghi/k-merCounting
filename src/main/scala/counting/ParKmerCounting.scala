@@ -5,7 +5,6 @@ import org.apache.spark.rdd.RDD
 import utils.FileManager
 import utils.GenomicUtils._
 
-import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.mutable.ParArray
 
 class ParKmerCounting(fileName: String, sparkContext: SparkContext,
@@ -15,7 +14,6 @@ class ParKmerCounting(fileName: String, sparkContext: SparkContext,
 
   //read the FASTA file
   override val sequence: S = FileManager.readFASTAtoRDD(fileName, sparkContext)
-  override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction( k:Broadcast[Int]): T = {
 

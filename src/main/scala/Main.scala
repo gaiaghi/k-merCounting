@@ -5,8 +5,6 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import utils.SparkContextSetup
 
-import scala.collection.parallel.CollectionConverters._
-
 
 object Main {
 

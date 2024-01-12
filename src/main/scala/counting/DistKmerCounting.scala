@@ -16,7 +16,6 @@ class DistKmerCounting(fileName: String, sparkContext: SparkContext,
 
   //read the FASTA file
   override val sequence: S = FileManager.readFASTAtoRDD(fileName, sparkContext)
-  override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction( k: Broadcast[Int]): T = {
 

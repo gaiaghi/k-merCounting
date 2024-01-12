@@ -46,11 +46,16 @@ object FileManager{
     import sparkSession.implicits._
 
     // read genomic sequence (in "sequence reads")
-    val df = sparkSession.read.option("lineSep", ">").textFile(fileName)
+    val df = sparkSession.read.options(Map("lineSep" -> ">")).textFile(fileName)
 
-    //remove header lines
-    val genSeq = df.withColumn("value", regexp_replace($"value", "^.*\\n", ""))
-      .withColumn("value", regexp_replace($"value", "^;.+\\n", "")).filter(r => r.mkString.nonEmpty)
+    df.show(false)
+
+    //remove header and comment lines
+    val genSeq = df.withColumn("value", regexp_replace($"value", ";[^\n]*\n", ""))
+      .withColumn("value", regexp_replace($"value", "^[^\n]*\n", ""))
+      .withColumn("value", regexp_replace($"value", "[^A-Za-z0-9]", ""))
+      .filter(r => r.mkString.nonEmpty)
+    genSeq.show(false)
 
     genSeq
   }

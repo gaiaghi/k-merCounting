@@ -4,7 +4,6 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import utils.FileManager
 import utils.GenomicUtils._
-import scala.collection.parallel.CollectionConverters._
 
 class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
                       k:Broadcast[Int]) extends CountingAlgorithm(fileName, sparkContext, k) with CountingType {
@@ -13,7 +12,6 @@ class SeqKmerCounting(fileName: String, sparkContext: SparkContext,
 
   //read the FASTA file
   override val sequence: S = FileManager.readFASTAtoRDD(fileName, sparkContext)
-  override val kmers: T = _kmerExtraction(k)
 
   override def _kmerExtraction( k:Broadcast[Int]): T = {
 

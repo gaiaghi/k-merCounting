@@ -9,4 +9,6 @@ trait CountingType extends CountingAlgorithm {
 
   override def nonCanonicalCounter: RDD[(String, Int)] =
     _counting(kmers, canonical = false)
+
+  override lazy val kmers: T = _kmerExtraction(k)
 }
